@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.context.annotation.Import;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-import com.confg.SwaggerConfiguration;
+
 @EnableAsync
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 //@Import(SwaggerConfiguration.class)

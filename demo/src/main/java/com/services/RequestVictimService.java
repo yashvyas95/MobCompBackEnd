@@ -101,6 +101,14 @@ public class RequestVictimService {
     		return reqObj;
     	}
     	return null;
-    } 
+    }
+    
+    
+    public List<Request> getAcitveRequestForVictim(Long id){
+    	var active_dir = requestRepo.findByResTeamObj(id);
+    	var list = active_dir.stream().filter(c->c.isStatus()).collect(Collectors.toList());
+    	logger.info(active_dir.toString());
+    	return list;
+    }	
 }
 

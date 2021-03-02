@@ -49,4 +49,11 @@ public class RequestController {
 		var returnRequest = reqVicService.forLogin(fullName, location);
 		return status(HttpStatus.OK).body(returnRequest);
 	}
+	
+	@GetMapping("/getUserActiveRequest")
+	public ResponseEntity<Object> getUserActiveRequest(@RequestParam String id) {
+		var returnRequest = reqVicService.getAcitveRequestForVictim(Long.parseLong(id));
+		return status(HttpStatus.OK).body(returnRequest);
+	}
+	
 }

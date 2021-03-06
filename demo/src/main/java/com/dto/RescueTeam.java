@@ -8,6 +8,7 @@ import org.springframework.lang.Nullable;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import com.dto.Request;
 import static javax.persistence.FetchType.LAZY;
@@ -26,19 +27,16 @@ public class RescueTeam {
 	 	private String location;
 	 	
 	 	@Column
-	    private String empId;
-	 	
-	 	@Column
-	    private String emp2Id;
-	 	
-	 	@Column
-	    private String emp3Id;
+	    private ArrayList<Long> members;
 	 	
 	 	@Column
 	    private Long requestId;
 
 	 	@Column
 	    private boolean status;
+	 	
+	 	@Column
+	 	private String nature;
 
 		public Long getRescueTeamId() {
 			return rescueTeamId;
@@ -70,5 +68,13 @@ public class RescueTeam {
 		public boolean getStatus() {
 			return this.status;
 		}
-	 	
+
+		public void setmembers(ArrayList<Long> getmembers) {
+				this.members=getmembers;
+		}
+
+		public ArrayList<Long> getmembers() {
+			return this.members;
+	}
+ 	
 }

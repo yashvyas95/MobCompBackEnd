@@ -6,27 +6,30 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-
+import com.dto.Department;
 import com.dto.RescueTeam;
 
 
 @Repository
-public interface RescueTeamRepo extends JpaRepository<RescueTeam, Long>{
+public interface DepartmentRepo extends JpaRepository<Department, Long>{
 		
 	
-	List<RescueTeam> findOneByStatus(boolean status);
+	List<Department> findOneByStatus(boolean status);
 	
 //	List<RescueTeam> findBylocation(String location);
 	
 	//RescueTeam findByTypeOfTeam(String type);
 	
-	Optional<RescueTeam> findByRequestId(Long id);
+	Optional<Department> findBydepartmentId(Long id);
 	
 //	Optional<RescueTeam> findByrequestId(Integer id);
 	
-	Optional<RescueTeam> findByRescueTeamId(Long id);
+	//Optional<RescueTeam> findByRescueTeamId(Long id);
 	
-	Optional<RescueTeam> findByMembers(Long id);
+	Optional<Department> findByEmployees(Long id);
 	
+	List<Long> findMembersByName(String name);
+	
+	Optional<Department> findByName(String name);
 	
 }

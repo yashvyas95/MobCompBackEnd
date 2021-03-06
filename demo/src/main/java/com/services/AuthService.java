@@ -4,14 +4,18 @@ import com.dto.User;
 import com.dto.VerificationToken;
 import com.exceptions.SpringRedditException;
 import com.repositories.UserRepo;
+import com.controller.RequestController;
 import com.dto.AuthenticationResponse;
 import com.dto.LoginRequest;
+import com.repositories.DepartmentRepo;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,11 +40,13 @@ import com.repositories.VerificationTokenRepository;
 public class AuthService {
     @Autowired
 	private  UserRepo userRepository;
+    private DepartmentRepo depRepo;
     @Autowired
     private  AuthenticationManager authenticationManager;
     private  VerificationTokenRepository verificationtokenrepository;
     private  PasswordEncoder passwordEncoder;
-    
+    private static final Logger logger = LoggerFactory.getLogger(AuthService.class);
+
     public void signup(RegisterRequestUser registerRequest) {
         User user = new User();
         user.setUsername(registerRequest.getUsername());
@@ -50,7 +56,14 @@ public class AuthService {
         user.setRole("USER");
         user.setEnabled(true);
         user.setrescueTeamId(0L);
-        userRepository.save(user);
+        var userObj = userRepository.save(user);
+        logger.info(userObj.toString());
+        
+        var DepObj = depRepo.findByName(registerRequest.getDepartment()).orElse(null);
+        var members = DepObj.getEmployees();
+        members.add(userObj.getUserId());
+        depRepo.save(DepObj);
+        logger.info(DepObj.toString());
         String token = "token";
         
     }

@@ -11,14 +11,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-public class RegisterRescueTeam {
+public class RegisterDepartment {
 	
-	private ArrayList<Long> members;
+	private ArrayList<Long> employees;
     private String location;
     private String nature;
+    private String name;
     
-    public ArrayList<Long> getmembers(){return this.members;}
-    public void setmembers(ArrayList<Long>members){this.members=members;}
-
+    
     
 }

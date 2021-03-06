@@ -22,7 +22,7 @@ public class MessageController {
 	private MessageRepo messageRepo;
 	
 	
-	@GetMapping("/api/request/getmessages")
+	@GetMapping("/api/request/getmessages/")
 	public ResponseEntity<List<Message>> getRequestMessage(@RequestParam String requestId) {
 		return status(HttpStatus.OK).body(messageRepo.findByReceiver(Long.parseLong(requestId)));
 	}

@@ -55,6 +55,16 @@ public class ChatController {
 	 messageRepo.save(chatMessage);
     messagingTemplate.convertAndSend("/topic/chat", chatMessage);
   }
+  
+  @MessageMapping("/chat/{rescueTeamId}/sendToRescueTeam")
+  @SendTo("/topic/chat")
+  public void sendMessageToRescueTeam(@DestinationVariable String rescueTeamId, @Payload Message chatMessage) {
+	 logger.info("----SENDMESSAGETORESCUETAM------"+chatMessage.toString());
+	 //logger.info("----SENDMESSAGETOUSER------"+requestId.toString());
+    //messagingTemplate.convertAndSend("/topic/chat", chatMessage);
+	 messageRepo.save(chatMessage);
+    messagingTemplate.convertAndSend("/topic/chat", chatMessage);
+  }
 
   @MessageMapping("/chat/{userId}/sendToUser")
   @SendTo("/topic/chat")

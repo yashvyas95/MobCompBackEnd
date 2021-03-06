@@ -26,7 +26,10 @@ public class WebConfig implements WebMvcConfigurer {
         corsRegistry.addMapping("/api/rescueTeam/**").allowedOriginPatterns("*").allowedMethods("*")
         .maxAge(3600L)
         .allowedHeaders("*").allowCredentials(true);
-        
+        corsRegistry.addMapping("/api/department/**").allowedOriginPatterns("*").allowedMethods("*")
+        .maxAge(3600L)
+        .allowedHeaders("*").allowCredentials(true);
+           
     }
 
 }

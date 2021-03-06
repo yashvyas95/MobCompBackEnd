@@ -40,7 +40,7 @@ public class AuthController {
 	@Autowired
 	private UserDetailsServiceImpl userService;
 
-    @PostMapping("/signup")
+    @PostMapping("/signup") 
     public ResponseEntity<String> signup(@RequestBody RegisterRequestUser registerRequest) {
         authService.signup(registerRequest);
         return new ResponseEntity<>("User Registration Successful",OK);

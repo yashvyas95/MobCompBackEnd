@@ -47,23 +47,38 @@ public class RescueTeamService {
     @Autowired
    private  RequestRepo requestRepo;
     private  RescueTeamRepo resTeamRepo;
+    private UserRepo userRepo;
     
     public void add(RegisterRescueTeam resTeam) {
+    	logger.info("HERE+++++++++++++++++++++",resTeam.toString());
         String token = "token";
         RescueTeam resTeamObj = new RescueTeam();
-		resTeamObj.setEmpId(resTeam.getEmpId());
-		resTeamObj.setEmp2Id(resTeam.getEmp2Id());
-		resTeamObj.setEmp3Id(resTeam.getEmp3Id());
+        resTeamObj.setmembers(resTeam.getmembers());
+        
 		resTeamObj.setLocation(resTeam.getLocation());
-		resTeamObj.setStatus(false);
+		resTeamObj.setNature(resTeam.getNature());
+		resTeamObj.setStatus(true);
 		resTeamObj.setRequestId(0L);
-        resTeamRepo.save(resTeamObj);
+		logger.info("HERE+++++++++++++++++++++",resTeamObj.toString());
+        var savedResTeam = resTeamRepo.save(resTeamObj);
+        for(Long emp : resTeam.getmembers()) {
+        	User empObj = userRepo.findByUserId(emp).orElse(null);
+        	if(empObj!=null) {
+        		empObj.setrescueTeamId(savedResTeam.getRescueTeamId());
+        		userRepo.save(empObj);
+        	}
+        }
     }
     
-    public RescueTeam get(Long number) {
-    	//logger.info("HERE+++++++++++++++++++++",resTeamRepo.findByRequestId(number).orElse(null));
-    	return resTeamRepo.findById(number).orElse(null);	
-    	
+    public RescueTeam getByRequestId(Long number) {
+    	logger.info("HERE+++++++++++++++++++++",resTeamRepo.findByRequestId(number));
+    	return resTeamRepo.findByRequestId(number).orElse(null);	
+    }
+    
+    public RescueTeam getByRescueTeamId(Long number) {
+    	var obj = resTeamRepo.findByRescueTeamId(number);
+    	logger.info("HERE+++++++++++++++++++++",obj);
+    	return resTeamRepo.findByRescueTeamId(number).orElse(null);	
     }
     
     public List<Request> getRequestAssigned(Long number){
@@ -74,5 +89,8 @@ public class RescueTeamService {
     	return resTeamRepo.findAll();
     }
     
+    public RescueTeam save(RescueTeam resTeam) {
+    	return resTeamRepo.save(resTeam);
+    }
 }
 

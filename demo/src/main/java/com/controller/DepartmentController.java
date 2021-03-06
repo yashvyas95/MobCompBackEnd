@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dto.Department;
+import com.dto.RegisterDepartment;
 import com.dto.RegisterRescueTeam;
 import com.dto.ReqisterRequestVictim;
 import com.dto.Request;
 import com.dto.RescueTeam;
+import com.repositories.DepartmentRepo;
 import com.repositories.RequestRepo;
 import com.repositories.RescueTeamRepo;
 import com.services.AuthService;
@@ -28,31 +31,34 @@ import java.util.HashMap;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/rescueTeam")
+@RequestMapping("/api/department")
 @CrossOrigin(origins="http://localhost:4200/")
-public class RescueTeamController {
+public class DepartmentController {
 	@Autowired
-	private RescueTeamService resTeamService;
-	@Autowired
-	private RequestVictimService requestService;
+	private DepartmentRepo depRepo;
 	
-	 private static final Logger logger = LoggerFactory.getLogger(RescueTeamController.class);
+	 private static final Logger logger = LoggerFactory.getLogger(DepartmentController.class);
 	
-	@PostMapping("/addRescueTeam/")
-	public ResponseEntity<String> addRescueTeam(@RequestBody RegisterRescueTeam resTeam){
-		logger.info("ADD RESCUE TEAM");
-		logger.info(resTeam.toString());
-		resTeamService.add(resTeam);
-		return new ResponseEntity<>("RescueTeam Saved",OK);
+	@PostMapping("/addDepartment/")
+	public ResponseEntity<String> addDepartment(@RequestBody RegisterDepartment dep){
+		logger.info("ADD Department");
+		logger.info(dep.toString());
+		Department obj = new Department();
+		obj.SetEmployees(dep.getEmployees());
+		obj.setLocation(dep.getLocation());
+		obj.setName(dep.getName());
+		obj.setStatus(true);
+		depRepo.save(obj);
+		return new ResponseEntity<>("Department Saved",OK);
 			 
 	}
 	
-	@GetMapping("/getById/")
-	public ResponseEntity<RescueTeam> getRescueTeamById(@RequestParam String id){
-		return ResponseEntity.status(OK).body(resTeamService.getByRescueTeamId(Long.parseLong(id)));
+	@GetMapping("/getAll/")
+	public ResponseEntity<List<Department>> getAlldepartment(){
+		return ResponseEntity.status(OK).body(depRepo.findAll());
 			 
 	}
-	
+	/*
 	@GetMapping("/getRequestByRescueTeamId/")
 	public ResponseEntity<List<Request>> getRequestAssigned(@RequestParam Long id){
 		return ResponseEntity.status(OK).body(resTeamService.getRequestAssigned(id));
@@ -81,5 +87,6 @@ public class RescueTeamController {
 		
 		
 		return ResponseEntity.status(OK).body(map);
-	}	
+	}
+	*/	
 }

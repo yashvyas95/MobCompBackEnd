@@ -1,6 +1,7 @@
 package com.services;
 import com.dto.ReqisterRequestVictim;
 import com.dto.Request;
+import com.dto.RescueTeam;
 import com.dto.User;
 import com.dto.VerificationToken;
 import com.exceptions.SpringRedditException;
@@ -43,6 +44,7 @@ import com.repositories.VerificationTokenRepository;
 public class RequestVictimService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(RequestVictimService.class);
+	final String[] assistanceNature= {"Crime","Fire","Medical","Crime+Fire","Fire+Medical","Crime+Medical","Crime+Fire+Medical"};
 	
     @Autowired
 	private  RequestRepo requestRepo;
@@ -53,21 +55,37 @@ public class RequestVictimService {
         req.setName(victim.getName());
         req.setLocation(victim.getLocation());
         req.setNature(victim.getNature());
+        logger.info(victim.getNature()+"NATUREEEEEEEEEEEE");
         req.setStatus(true);
-        var list = resTeamRepo.findAll().stream().filter(c->c.getStatus()==false).collect(Collectors.toList());
+        logger.info("REQUESTSERVICE"+req.toString());
+        var list = resTeamRepo.findAll().stream().filter(c->c.getStatus()==true).collect(Collectors.toList());
+        logger.info("HERE--"+list.toString());
+        Request reqObjSaved=null;
         if(list.size()!=0) {
-        	logger.info(list.toString());
-        	logger.info(list.get(0).toString());
-        	req.setResTeamObj(list.get(0).getRescueTeamId());
+        	for(var r : list) {
+        		
+        		logger.info(r.getNature()+"RESTEAM NATURE");
+        		logger.info(victim.getNature()+"VCTIM NATURE");
+        		if(r!=null && r.getRequestId()==0 && r.getNature().contains(victim.getNature())) {
+        			req.setResTeamObj(r.getRescueTeamId());
+        			logger.info("IN REQUEST SERVICE"+r.toString());
+        			logger.info("IN REQUEST SERVICE"+req.toString());
+        			reqObjSaved = requestRepo.save(req);
+        			r.setRequestId(reqObjSaved.getRequestId());
+        			resTeamRepo.save(r);
+        			break;
+        			}
+        		}
         	
-        	var reqObjSaved = requestRepo.save(req);
-        	list.get(0).setRequestId(reqObjSaved.getRequestId());
-        	list.get(0).setStatus(true);
+        }
+        
+        else {
+        	req.setResTeamObj(0L);
+        	reqObjSaved = requestRepo.save(req);
         	
-        	}
-        else {req.setResTeamObj(13L);}
-        var reqObjSaved = requestRepo.save(req);
+        }
         return reqObjSaved;
+        
     }
     
     public Request get(Long id) {
@@ -84,9 +102,27 @@ public class RequestVictimService {
     	logger.info(request.toString());
     	if(request==null) {return null;}
     	else {
+    		var resTeamObj =resTeamRepo.findByRescueTeamId(request.getResTeamObj()).orElse(null);
+    		var remaining_Request=requestRepo.findAll().stream().filter(c->c.getResTeamObj()==0 && c.isStatus()).collect(Collectors.toList());
+    		
+    		logger.info("IN REQUEST SERVICE1"+resTeamObj);
+    		logger.info("IN REQUEST SERVICE1"+remaining_Request.toString());
+    		if(remaining_Request.size()!=0 && resTeamObj!=null) {
+    			resTeamObj.setRequestId(remaining_Request.get(0).getRequestId());
+    			remaining_Request.get(0).setResTeamObj(resTeamObj.getRescueTeamId());
+    			logger.info("IN");
+    		}
+    		else {
+    				if(resTeamObj!=null) {
+    				resTeamObj.setRequestId(0L);
+    				resTeamRepo.save(resTeamObj);
+    				logger.info("SECOND"+resTeamObj);
+    				}
+    		}
     		
     		request.setStatus(false);
     		requestRepo.save(request);
+    		
         	return request;
     	}
     	
@@ -94,21 +130,34 @@ public class RequestVictimService {
     
     public Request forLogin(String fullName,String location) {
     	var reqObj = requestRepo.findByName(fullName).orElse(null);
-    	logger.info(reqObj.toString());
-    	logger.info(reqObj.getLocation());
-    	logger.info(location);
-    	if(reqObj.getLocation().toString().equals(location.toString())) {
-    		return reqObj;
+    	if(reqObj!=null) {
+    		logger.info(reqObj.toString());
+        	logger.info(reqObj.getLocation());
+        	logger.info(location);
+        	if(reqObj.getLocation().toString().equals(location.toString())) {
+        		return reqObj;
+        	}
     	}
     	return null;
     }
     
     
     public List<Request> getAcitveRequestForVictim(Long id){
-    	var active_dir = requestRepo.findByResTeamObj(id);
-    	var list = active_dir.stream().filter(c->c.isStatus()).collect(Collectors.toList());
-    	logger.info(active_dir.toString());
-    	return list;
-    }	
+    	var active_dir = requestRepo.findAll();
+    	active_dir.stream().filter(c->c.isStatus()&&c.getResTeamObj()==id).collect(Collectors.toList());
+    	logger.info("IN REQUEST SERVICE"+active_dir.toString());
+    	//logger.info("IN REQUEST SERVICE"+list.toString());
+    	return active_dir;
+    }
+    
+    public List<Request> getAllAciveRequest(){
+    	var active_dir = requestRepo.findAll();
+    	active_dir = active_dir.stream().filter(c->c.isStatus()).collect(Collectors.toList());
+    	return active_dir;
+    }
+    
+    public Request save(Request resTeam) {
+    	return requestRepo.save(resTeam);
+    }
 }
 

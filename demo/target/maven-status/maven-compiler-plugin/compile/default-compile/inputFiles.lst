@@ -1,3 +1,4 @@
+C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\controller\DepartmentController.java
 C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\dto\LogoutRequest.java
 C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\DemoApplication.java
 C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\repositories\MessageRepo.java
@@ -7,15 +8,17 @@ C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\controller\AuthCont
 C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\confg\WebSocketConfig.java
 C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\dto\VerificationToken.java
 C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\dto\Request.java
-C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\confg\SocketBrokerConfig.java
 C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\dto\RequestResponse.java
 C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\dto\Greeting.java
+C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\repositories\DepartmentRepo.java
 C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\exceptions\SpringRedditException.java
 C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\dto\Message.java
+C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\dto\Department.java
 C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\repositories\UserRepo.java
 C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\dto\HelloMessage.java
 C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\dto\User.java
 C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\services\RequestVictimService.java
+C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\dto\RegisterDepartment.java
 C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\dto\LoginRequest.java
 C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\confg\SecurityConfig.java
 C:\Users\Itachi_yv\Downloads\demo (2)\demo\src\main\java\com\controller\RequestController.java

@@ -66,17 +66,18 @@ public class RequestVictimService {
         		
         		logger.info(r.getNature()+"RESTEAM NATURE");
         		logger.info(victim.getNature()+"VCTIM NATURE");
-        		if(r!=null && r.getRequestId()==0 && r.getNature().contains(victim.getNature())) {
+        		
+        			if(r.getRequestId()==0 && r.getNature().contains(victim.getNature())) {
         			req.setResTeamObj(r.getRescueTeamId());
-        			logger.info("IN REQUEST SERVICE"+r.toString());
-        			logger.info("IN REQUEST SERVICE"+req.toString());
+        			//logger.info("IN REQUEST SERVICE"+r.toString());
+        			//logger.info("IN REQUEST SERVICE"+req.toString());
         			reqObjSaved = requestRepo.save(req);
         			r.setRequestId(reqObjSaved.getRequestId());
         			resTeamRepo.save(r);
         			break;
         			}
-        		}
-        	
+        		
+        	}
         }
         
         else {

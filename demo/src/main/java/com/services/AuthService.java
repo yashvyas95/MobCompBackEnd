@@ -59,12 +59,12 @@ public class AuthService {
         var userObj = userRepository.save(user);
         logger.info(userObj.toString());
         
-        var DepObj = depRepo.findByName(registerRequest.getDepartment()).orElse(null);
-        var members = DepObj.getEmployees();
-        members.add(userObj.getUserId());
-        depRepo.save(DepObj);
-        logger.info(DepObj.toString());
-        String token = "token";
+       // var DepObj = depRepo.findByName(registerRequest.getDepartment()).orElse(null);
+   //     var members = (DepObj!=null)?DepObj.getEmployees():null;
+   //     members.add(userObj.getUserId());
+  //      depRepo.save(DepObj);
+  //      logger.info(DepObj.toString());
+   //     String token = "token";
         
     }
 

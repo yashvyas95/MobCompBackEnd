@@ -14,21 +14,21 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry corsRegistry) {
         corsRegistry.addMapping("/api/auth/login")
                 .allowedOrigins("http://localhost:4200/**")
-                .allowedMethods("*")
+                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
                 .maxAge(3600L)
                 .allowedHeaders("*")
                 .exposedHeaders("Authorization")
                 .allowCredentials(true);
-        corsRegistry.addMapping("/api/request/**").allowedOrigins("*").allowedMethods("*")
+        corsRegistry.addMapping("/api/request/**").allowedOrigins("*").allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
         .maxAge(3600L)
         .allowedHeaders("*")
-        .exposedHeaders("Authorization").allowCredentials(false);
-        corsRegistry.addMapping("/api/rescueTeam/**").allowedOriginPatterns("*").allowedMethods("*")
-        .maxAge(3600L)
+        .exposedHeaders("*").allowCredentials(false);
+        corsRegistry.addMapping("/api/rescueTeam/**").allowedOriginPatterns("*").allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+        .maxAge(3600L).exposedHeaders("Authorization")
         .allowedHeaders("*").allowCredentials(true);
-        corsRegistry.addMapping("/api/department/**").allowedOriginPatterns("*").allowedMethods("*")
+        corsRegistry.addMapping("/api/department/**").allowedOriginPatterns("*").allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
         .maxAge(3600L)
-        .allowedHeaders("*").allowCredentials(true);
+        .allowedHeaders("*").allowCredentials(true).exposedHeaders("Authorization");
            
     }
 

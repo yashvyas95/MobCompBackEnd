@@ -1,0 +1,37 @@
+version: '3.3'
+
+services:
+    #service 1: definition of mysql database
+    mysql :
+      image: mysql
+      container_name: mysql   
+      environment:
+        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_USER=root
+        - MYSQL_DATABASE=dismgmtapp
+      ports:
+        - "3307:3306"
+      restart: always
+    #service 2: definition of Spring Boot 
+    demo:
+      build: .
+      container_name: backend
+      ports:
+        - "8080:8080"
+      restart: always
+      depends_on:
+        - mysql
+      environment:
+        SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/dismgmtapp?createDatabaseIfNotExist=true
+        SPRING_DATASOURCE_PASSWORD: root
+        SPRING_DATASOURCE_USERNAME: root
+      links:
+        - "mysql"
+    #service 3: definition of Angular Application
+    frontend-app:                        #[Name to be used in the file]
+     build: ./frontendapp
+     container_name: frontendapp
+     ports:
+        - "4200:80"
+     links:
+        - demo

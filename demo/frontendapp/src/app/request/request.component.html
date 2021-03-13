@@ -1,0 +1,81 @@
+<div class="login-section">
+    <div class="row justify-content-md-center">
+        <div class="col col-lg-2">
+        </div>
+        <div class="col-md-auto">
+            <div class="card-header" style="text-align: center">
+                <h4>Create Request</h4>
+                <mat-card class="requestForm-card">
+                   
+                    <mat-card-content>
+                        <form group="request-form" [formGroup]="requestForm" (ngSubmit)="onSubmit(requestForm.value)">
+                            <label>Name</label>
+                            <p><input matInput class="form-control" type="String" required formControlName="name"
+                                    placeholder="Ex. xyz"></p>
+                            <label>No. of People</label>
+                            <p><input matInput class="form-control" type="Number" required formControlName="people"
+                                    placeholder="Ex. 1,2,3..."></p>
+                            <label>location</label>
+                            <p><input matInput class="form-control" type="String" formControlName="location"
+                                    placeholder="berlin,..."></p>
+                            <label>Nature of Assistance Needed</label>
+                            <section class="example-section">
+                                <mat-checkbox type="checkbox" formControlName="fire" class="example-margin"
+                                    [(ngModel)]="request.fire">Fire
+                                </mat-checkbox>
+                                &nbsp;&nbsp;<mat-checkbox class="form-control" formControlName="medical"
+                                    class="example-margin" [(ngModel)]="request.medical">Medical
+                                </mat-checkbox>
+                                &nbsp;&nbsp;<mat-checkbox class="form-control" formControlName="crime"
+                                    class="example-margin" [(ngModel)]="request.crime">Crime
+                                </mat-checkbox>
+                            </section>
+                            <button class="login" type="submit">Submit</button>
+                            &nbsp;&nbsp;
+                        </form>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+        <div class="col col-lg-2">
+        </div>
+    </div>
+</div>
+
+<!--
+<div class="login-section">
+<div clas="row justify-content-center">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header" style="text-align: center"><h4>Create Request</h4>
+                <div class="card-body">
+                    <mat-card class="requestForm-card">
+                        <mat-card-content>
+                            <form group="request-form" [formGroup]="requestForm" (ngSubmit)="onSubmit(requestForm.value)">
+                                            <mat-label>Name</mat-label>
+                                        <p><input matInput type="String" required formControlName="name" placeholder="Ex. xyz"></p>
+                                    <mat-label>No. of People</mat-label>
+                                        <p><input matInput type="Number" required formControlName="people" placeholder="Ex. 1,2,3..."></p>
+                                    <mat-label>location</mat-label>    
+                                        <p><input matInput type="String" formControlName="location" placeholder="berlin,..."></p>
+                                    <mat-label>Nature of Assistance Needed</mat-label>    
+                                    <section class="example-section">
+                                        <mat-checkbox formControlName="fire" class="example-margin" [(ngModel)]="request.fire">Fire</mat-checkbox>
+                                        &nbsp;&nbsp;<mat-checkbox formControlName="medical" class="example-margin" [(ngModel)]="request.medical">Medical</mat-checkbox>
+                                        &nbsp;&nbsp;<mat-checkbox formControlName="crime" class="example-margin" [(ngModel)]="request.crime">Crime</mat-checkbox>  
+                                    </section>
+                                    <button class="button" type="submit">Submit</button>
+                                    &nbsp;&nbsp;
+                                    </form>                   
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+<div class="col-md-3"></div>
+</div>
+</div>
+
+-->

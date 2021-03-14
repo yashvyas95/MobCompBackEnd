@@ -23,7 +23,7 @@ import { time } from 'console';
 export class ChatLobbyComponent implements OnInit {
   webSocketEndPoint: string = 'http://localhost:8080/ws';
 
-  topic: string = "/topic/greetings";
+  //topic: string = "/topic/greetings";
   request:RequestReceived;
   title = 'WebSocketChatRoom';
   rescueTeam : any;
@@ -129,7 +129,7 @@ export class ChatLobbyComponent implements OnInit {
   disconnect(){
     this.webSocketService.closeWebSocket();
   }
-  sentMessages:any;
+  sentMessages:any=[];
   sendMessage() {
     
     let timestamp =  new Date();
@@ -139,6 +139,7 @@ export class ChatLobbyComponent implements OnInit {
     //chat/{rescueTeamId}/send
     let channel = "/app/chat/"+this.rescueTeam.rescueTeamId+"/sendToRescueTeam"
     let messageToSend = new ChatMessageDto(channel,Date(),this.request.requestId.toString(),messageContent,this.rescueTeam.rescueTeamId);
+    this.sentMessages.push(messageToSend);
     console.log(messageToSend);
     this.ws.send(channel, {},JSON.stringify(messageToSend));
     //this.ws.send("/app/chat", {},messageContent);

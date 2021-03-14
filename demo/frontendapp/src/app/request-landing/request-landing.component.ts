@@ -53,7 +53,10 @@ export class RequestLandingComponent implements OnInit {
       // console.log("X"+x);
       //console.log(this.rescueTeamData);
       this.messageService.getMessageByRequestId(this.localStorage.retrieve('request').requestId).subscribe(
-        (response)=>{this.allMessages=response;},
+        (response)=>{
+          this.allMessages=response;
+          console.log(response);
+        },
         (error)=>{console.log(error);}
         
       );
@@ -91,7 +94,7 @@ export class RequestLandingComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.data = this.allMessages;
     dialogConfig.autoFocus = true;
-    dialogConfig.width="100%";
+    dialogConfig.width="100%";dialogConfig.height="600px";
     dialogConfig.position={top:"100px",left:""}
     this.dialog.open(ChatLobbyComponent,dialogConfig);
   }

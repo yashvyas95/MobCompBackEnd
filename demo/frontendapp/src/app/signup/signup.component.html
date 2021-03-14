@@ -41,25 +41,21 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="department" class="col-md-4 col-form-label text-md-right">Department</label>
+                            <label for="department" class="col-md-4 col-form-label text-md-right"></label>
                             <div class="col-md-6">
                                 <mat-form-field appearance="fill">
                                     <mat-label>Department</mat-label>
-                                    <select class="custom-select" (change)="changeCity($event)" formControlName="department">
-                                        <option value="" disabled>Choose your Department</option>
+                                    <select class="custom-select" (change)="changeDepartment($event)" formControlName="department">
+                                        <option value="" disabled>Department</option>
                                         <option *ngFor="let department of Departments" [ngValue]="department">{{department}}</option>
                                      </select>
-                                  </mat-form-field>
-                                
+                                  </mat-form-field>                      
                             </div>
                         </div>
-
- 
                         <span class="col-md-6 offset-md-4">
                             <button type="submit" class="sign-up">
                                 Sign Up
-                            </button>
-                        
+                            </button>           
                         </span>
                     </form>
                 </div>

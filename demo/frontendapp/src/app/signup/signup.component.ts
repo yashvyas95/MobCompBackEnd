@@ -12,7 +12,7 @@ import {SignupRequestPayload} from '../signup/singup-request.payload'
 export class SignupComponent implements OnInit {
   signupForm:any;
   signupRequestPayload: { username: string; email: string; password: string; department: string; };
-  Departments:any=["Fire","Medical","Army","Police","Scientist"];
+  Departments:any=["Fire","Medical","Police"];
 
   constructor(private authService: AuthService, private router: Router,
     private toastr: ToastrService) {
@@ -50,7 +50,7 @@ export class SignupComponent implements OnInit {
         });
     }
 
-    changeCity(e:any) {
+    changeDepartment(e:any) {
       this.Departments.setValue(e.target.value, {
         onlySelf: true
       })

@@ -51,17 +51,15 @@
                   
                 </div>
               </div>
-
+            </li>
               <div class="outgoing_msg"  *ngFor="let sentMessage of sentMessages">
                   <div class="sent_msg">
                      <p>
-                      {{message.content}}
+                      {{sentMessage.content}}
                      </p>
                     
                   </div>
-              </div>
-       
-            </li>
+              </div>     
           </div>
           <div class="type_msg">
             <form class="input_msg_write" [formGroup]="chatform" (ngSubmit)="sendMessage()">

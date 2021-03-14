@@ -19,13 +19,19 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .exposedHeaders("Authorization")
                 .allowCredentials(true);
+        
         corsRegistry.addMapping("/api/request/**").allowedOrigins("*").allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
         .maxAge(3600L)
         .allowedHeaders("*")
         .exposedHeaders("*").allowCredentials(false);
+        
         corsRegistry.addMapping("/api/rescueTeam/**").allowedOriginPatterns("*").allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
         .maxAge(3600L).exposedHeaders("Authorization")
         .allowedHeaders("*").allowCredentials(true);
+        
+        corsRegistry.addMapping("/api/message/**").allowedOriginPatterns("*").allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+        .maxAge(3600L).allowedHeaders("*").exposedHeaders("*").allowCredentials(false);
+        
         corsRegistry.addMapping("/api/department/**").allowedOriginPatterns("*").allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
         .maxAge(3600L)
         .allowedHeaders("*").allowCredentials(true).exposedHeaders("Authorization");

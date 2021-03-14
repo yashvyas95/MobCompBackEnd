@@ -3,9 +3,8 @@
     <div class="channels"  *ngFor="let message of messages">
          <h5>
                 {{message}}
-            </h5>
-            <p>here</p>
-          </div>
+         </h5>
+    </div>
   </div>
  
 
@@ -14,8 +13,7 @@
         <label for="Message" class="col-md-4 col-form-label text-md-right">Message</label>
         <div class="col-md-10">
             <input type="text" id="message" class="form-control" [formControlName]="'message'" name="message" required
-                autofocus>
-                                              
+                autofocus>                          
         </div>
     </div>
 

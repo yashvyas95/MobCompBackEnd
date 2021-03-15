@@ -36,7 +36,9 @@ export class RequestLandingComponent implements OnInit {
       console.log(this.localStorage.retrieve('request'));
       console.log(this.localStorage.retrieve('request').resTeamObj);
       this.requestObject=this.requestService.getRequest(this.localStorage.retrieve('request').requestId)
-      this.rescueTeamObject=this.rescueTeamService.getRescueTeam(this.localStorage.retrieve('request').resTeamObj)
+      this.rescueTeamService.getRescueTeam(this.localStorage.retrieve('request').resTeamObj).subscribe(
+        (response)=>{this.rescueTeamObject=[response];}
+      );
       this.allMessages=this.messageService.getMessageByRequestId(this.localStorage.retrieve('request').requestId);
       this.connect();
   }

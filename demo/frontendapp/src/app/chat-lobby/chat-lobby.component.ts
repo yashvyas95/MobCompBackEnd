@@ -15,6 +15,7 @@ import { chatMessage, Messagetype } from '../model/ChatMessage';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { time } from 'console';
 import { MessageService} from '../services/message.service';
+import { AuthService } from '../services/auth.service';
 
 
 @Component({
@@ -37,11 +38,22 @@ export class ChatLobbyComponent implements OnInit {
   messageInput: any;
 
 
-  constructor(private webSocketService:WebSocketService,private dialog: MatDialog, private localStorage: LocalStorageService, private vicServices: VictimServicesService, private reqServices: RescueTeamService,private messageService: MessageService ,@Inject(MAT_DIALOG_DATA) public data: any) {
+  constructor(private authService:AuthService,private webSocketService:WebSocketService,private dialog: MatDialog, private localStorage: LocalStorageService, private vicServices: VictimServicesService, private reqServices: RescueTeamService,private messageService: MessageService ,@Inject(MAT_DIALOG_DATA) public data: any) {
     this.request = this.localStorage.retrieve('request');
     this.user = this.localStorage.retrieve('username');
+
+
     if (this.user != null) {
-      console.log("INSIDE");
+        this.authService.getUser(this.user).subscribe(
+          (response:any)=>{
+            this.reqServices.getRescueTeam(response.rescueTeamId).subscribe(
+              (response:any)=>{
+                  this.channelList=response.requestId;
+              }
+            )
+          }
+        )
+        
     }
     else {
       this.vicServices.getRequest(this.request.requestId).subscribe(data => {

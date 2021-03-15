@@ -36,16 +36,16 @@ export class AdminComponent implements OnInit {
   rescueInfoDialogOpen = false;
   employeeInfoDialogOpen = false;
   username: any;
-  messsages: any[] = [];
-  private updateSubscription!: Subscription;
+  messages: any[] = [];
   constructor(private authService: AuthService, private messageService: MessageService, private router: Router, private localStorage: LocalStorageService, private http: HttpClient, public dialog: MatDialog) {
+
+
     this.username = this.localStorage.retrieve('username');
     this.authService.getUser(this.username).subscribe(
       (response: any) => {
         this.messageService.getMessageByUserId(response.userId).subscribe(
           (response) => {
-            this.messsages.push(response);
-            console.log(response)
+            this.messages = response;
           }
         );
       })
@@ -62,8 +62,8 @@ export class AdminComponent implements OnInit {
     this.authService.getUser(this.username).subscribe(
       (response: any) => {
         this.messageService.getMessageByUserId(response.userId).subscribe(
-          (response2:any) => {
-            this.messsages = response2;
+          (response2: any) => {
+            this.messages = response2;
           }
         )
       }
@@ -89,14 +89,8 @@ export class AdminComponent implements OnInit {
     );
 
 
-    this.updateSubscription = interval(1000).subscribe(
-      (val) => {
-        this.getallData()
-      });
   }
-  getallData() {
 
-  }
   openRescueDialog(): void {
 
     const dialogConfig = new MatDialogConfig();
@@ -168,7 +162,7 @@ export class AdminComponent implements OnInit {
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
-    dialogConfig.data = this.messsages;
+    dialogConfig.data = this.messages;
     dialogConfig.autoFocus = true;
     dialogConfig.position = { top: "100px", left: "" };
     if (!this.employeeInfoDialogOpen) { this.dialog.open(AllMessagesDialogComponent, dialogConfig); this.employeeInfoDialogOpen = true; }

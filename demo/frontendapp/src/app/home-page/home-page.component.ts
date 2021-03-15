@@ -126,7 +126,7 @@ export class HomePageComponent implements OnInit {
 
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
-    dialogConfig.data = this.AllUsers;
+    dialogConfig.data = this.allMessages;
     dialogConfig.autoFocus = true;
     dialogConfig.position = { top: "100px", left: "" };
     if (!this.employeeInfoDialogOpen) { this.dialog.open(AllMessagesDialogComponent, dialogConfig); this.employeeInfoDialogOpen = true; }

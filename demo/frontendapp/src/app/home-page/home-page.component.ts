@@ -135,15 +135,7 @@ export class HomePageComponent implements OnInit {
 
 
 
-  openChatLobby() {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.data = this.allMessages;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = "100%";
-    dialogConfig.position = { top: "100px", left: "" }
-    this.dialog.open(ChatLobbyComponent, dialogConfig);
-  }
+
 
 
   connect() {

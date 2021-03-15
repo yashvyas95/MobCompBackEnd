@@ -57,7 +57,7 @@ public class ChatController {
 	 messagingTemplate.convertAndSend("/topic/chat/"+rescueTeamId, chatMessage);
 	 messageRepo.save(chatMessage);
   }
-
+  
   @MessageMapping("/chat/{userId}/sendToUser")
   @SendTo("/topic/chat")
   public void sendMessageToUser(@DestinationVariable String userId, @Payload Message chatMessage) {

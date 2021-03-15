@@ -19,6 +19,11 @@ import { ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MessageService} from '../services/message.service';
 import { ChatLobbyComponent} from '../chat-lobby/chat-lobby.component';
+import { AuthService } from '../services/auth.service';
+import { RescueTeamService} from '../services/rescue-team.service';
+import { RequestService } from '../services/request.service';
+import { User } from '../model/User';
+import { WebSocketService } from '../services/web-socket.service';
 
 @Component({
   selector: 'app-home-page',
@@ -29,6 +34,7 @@ export class HomePageComponent implements OnInit {
   rescueTeamId = 0;
   password = 'user';
   user: any;
+  username:string='';
   rescueTeam: any;
   requestAssignedToUser: any;
   AllUsers: any;
@@ -42,70 +48,42 @@ export class HomePageComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   displayedColumns = ['sender', 'content'];
-  displayedColumnsForRequest = ['requestId', 'name', 'location', 'resTeamObj', 'nature', 'status', 'action', 'action2'];
+  displayedColumnsForRequest = ['requestId', 'name', 'location','resTeamObj'];
   allMessages: any;
 
 
-  constructor(private messageService:MessageService,private router: Router, private localStorage: LocalStorageService, private http: HttpClient, public dialog: MatDialog) {
-    console.log(this.localStorage.retrieve('username'));
-    this.connect();
-    this.newMessages = [];
+  constructor(private websocketService:WebSocketService,private requestService: RequestService,private rescueTeamService : RescueTeamService ,private authService:AuthService, private messageService:MessageService,private router: Router, private localStorage: LocalStorageService, private http: HttpClient, public dialog: MatDialog) {
+    
   }
 
   ngOnInit(): void {
 
-    console.log(this.localStorage.retrieve('username'));
-    if (this.localStorage.retrieve('username') == null) { this.router.navigate(['/']); }
-    const params = new HttpParams().append('username', this.localStorage.retrieve('username'));
-    this.http.get('http://localhost:8080/api/auth/userByUsername', { params: params }).subscribe(
-      (response) => {
-        console.log(response),
-          this.user = response,
-          console.log(this.user.rescueTeamId);
-        let params2 = new HttpParams().append('id', this.user.rescueTeamId);
-        this.http.get('http://localhost:8080/api/rescueTeam/getById/', { params: params2 }).subscribe(
-          (response) => {
-            this.rescueTeam = [response],
-              console.log(this.rescueTeam);
-            console.log(response);
-            this.http.get('http://localhost:8080/api/rescueTeam/getRequestByRescueTeamId/', { params: params2 }).subscribe(
-              (response) => {
-                this.requestAssignedToUser = response;
-                console.log(response)
-              },
-              (error) => console.log(error)
-            );
-
-          },
-          (error) => console.log(error)
+    this.username=this.localStorage.retrieve('username');
+    console.log(this.username);
+    this.connect();
+    this.newMessages = [];
+    this.authService.getUser(this.username).subscribe(
+      (response:any)=>{
+        this.user=response
+        this.rescueTeamService.getRescueTeam(response.rescueTeamId).subscribe(
+          (response)=>this.rescueTeam=[response],
+        );
+        this.rescueTeamService.getRequestFromRequestId(response.rescueTeamId).subscribe(
+          (response)=>this.requestAssignedToUser=response,
+        );
+        this.requestService.getUserActiveRequest(response.rescueTeamId).subscribe(
+          (response)=>this.active_request=response,
+        );    
+        this.messageService.getMessageByUserId(response.userId).subscribe(
+          (response)=>{this.allMessages=response;}, 
         );
       },
-      (error) => console.log(error)
+      (error)=>{console.log(error)}
     );
-
-    this.http.get('http://localhost:8080/api/auth/getAllEmp').subscribe(
-      (response) => this.AllUsers = response,
-      (error) => console.log(error)
+    this.authService.getAllUser().subscribe(
+      (response)=>this.AllUsers=response,
     );
-    const params2 = new HttpParams().append('id', this.rescueTeamId.toString());
-    this.http.get('http://localhost:8080/api/request/getUserActiveRequest/', { params: params2 }).subscribe(
-      (response) => {
-        this.active_request = response;
-        console.log(response);
-
-      },
-      (error) => console.log(error)
-    );
-
-    this.connect();
-
-    this.messageService.getMessageByUserId(this.user.userId.toString()).subscribe(
-      (response)=>{this.allMessages=response;},
-      (error)=>{console.log(error);}
-      
-    );
-    console.log(this.allMessages);
-
+    this.websocketService.connectToWebSocket();
   }
 
 
@@ -128,7 +106,6 @@ export class HomePageComponent implements OnInit {
     dialogConfig.disableClose = true;
     dialogConfig.data = this.rescueTeam;
     dialogConfig.autoFocus = true;
-
     dialogConfig.position = { top: "100px", left: "" }
     if (!this.rescueInfoDialogOpen) { this.dialog.open(RescueTeamInfoDialogComponent, dialogConfig); this.rescueInfoDialogOpen = true; }
     else { this.dialog.closeAll(); this.rescueInfoDialogOpen = false; }

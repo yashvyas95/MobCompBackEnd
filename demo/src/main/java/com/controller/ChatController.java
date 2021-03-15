@@ -32,18 +32,11 @@ public class ChatController {
   private MessageRepo messageRepo;
   
   
-  @MessageMapping("/hello")
-  @SendTo("/topic/chat")
-  public Greeting greeting(HelloMessage message) throws Exception {
-    Thread.sleep(1000); // simulated delay
-    return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
-  }
-
   @MessageMapping("/chat/{roomId}/sendMessage")
   public void sendMessageToChatRoom(@DestinationVariable String roomId, @Payload Message chatMessage) {
 	 logger.info(roomId+"----SENDMESSAGE------"+chatMessage.toString());
     //messagingTemplate.convertAndSend("/topic/chat", chatMessage);
-  //  messagingTemplate.convertAndSend(format("/topic/chat/channel/%s", roomId), chatMessage);
+    //messagingTemplate.convertAndSend(format("/topic/chat/channel/%s", roomId), chatMessage);
   }
   
   @MessageMapping("/chat/{requestId}/send")
@@ -57,13 +50,12 @@ public class ChatController {
   }
   
   @MessageMapping("/chat/{rescueTeamId}/sendToRescueTeam")
-  @SendTo("/topic/chat")
+  //@SendTo("/topic/chat")
   public void sendMessageToRescueTeam(@DestinationVariable String rescueTeamId, @Payload Message chatMessage) {
-	 logger.info("----SENDMESSAGETORESCUETAM------"+chatMessage.toString());
+	 logger.info("----SENDMESSAGETORESCUETAM------"+chatMessage);
 	 //logger.info("----SENDMESSAGETOUSER------"+requestId.toString());
-    //messagingTemplate.convertAndSend("/topic/chat", chatMessage);
+	 messagingTemplate.convertAndSend("/topic/chat/"+rescueTeamId, chatMessage);
 	 messageRepo.save(chatMessage);
-    messagingTemplate.convertAndSend("/topic/chat", chatMessage);
   }
 
   @MessageMapping("/chat/{userId}/sendToUser")

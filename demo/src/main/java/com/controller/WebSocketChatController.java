@@ -26,27 +26,6 @@ public class WebSocketChatController {
 			this.simpMessagingTemplate.convertAndSend("/topic/chat",message);
 		}
 		
-		
-	
-		
-		
-		
-		
-		/*
-		@MessageMapping("/rescueTeamWithVictim/{id}")
-		@SendTo("/topic/rescueTeamWithVictim/{id}")
-		public Map<String,Object> rescueTeamWithVictim(@DestinationVariable int id) {
-			Map<String,Object> map = new HashMap<>();
-			RescueTeam rescueTeamObj = rescueTeamRepository.findById(id).orElse(null);
-			Victim victimObj = null;
-			if(rescueTeamObj.getVictimId() != null) {
-				victimObj = victimRepository.findById(rescueTeamObj.getVictimId()).orElse(null);
-			}		
-			map.put("rescueTeam",rescueTeamObj);
-			map.put("victim",victimObj);
-			return map;
-		}
-		*/
 
 	}
 

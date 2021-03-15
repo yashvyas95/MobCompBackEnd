@@ -6,90 +6,42 @@
       <table>
         <mat-card class="ActiveRequest-card">
             <mat-card-header>
-              <mat-card-title>Active Request Assigned</mat-card-title> 
+              <mat-card-title>Global Active Request</mat-card-title> 
             </mat-card-header>
             <mat-card-content>  
-              <div *ngFor="let activeRequest of active_request">
-                {{activeRequest.requestId}}
-                {{activeRequest.name}}
-                {{activeRequest.location}}
-            </div>
+                <table mat-table [dataSource]="active_request">
+                  <ng-container matColumnDef="requestId">
+                    <th mat-header-cell *matHeaderCellDef> request_id </th>
+                    <td mat-cell *matCellDef="let element"> {{element.requestId}} </td>
+                  </ng-container>
+                
+                
+                  <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> name </th>
+                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                  </ng-container>
+                
+               
+                  <ng-container matColumnDef="location">
+                    <th mat-header-cell *matHeaderCellDef> location </th>
+                    <td mat-cell *matCellDef="let element"> {{element.location}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="resTeamObj">
+                    <th mat-header-cell *matHeaderCellDef> RescueTeam </th>
+                    <td mat-cell *matCellDef="let element"> {{element.resTeamObj}} </td>
+                  </ng-container>
+  
+                  
+          
+                  <tr mat-header-row *matHeaderRowDef="displayedColumnsForRequest"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumnsForRequest;"></tr>
+                
+               
+                </table>
             </mat-card-content>
           </mat-card>
         </table>
-<!--
-          <mat-grid-tile>
-            <mat-card class="example-card">
-              <mat-card-header>
-                <div mat-card-avatar class="example-header-image"></div>
-                <mat-card-title>New Messages</mat-card-title> 
-              </mat-card-header>
-              <table>
-                <th>Sender</th>
-                <th>Content</th>
-              <mat-card-content>   
-                <div *ngFor="let newMessage of newMessages">
-                  <tr><td>{{newMessage.sender}}{{newMessage.content}}</td></tr>
-                  </div>
-                </mat-card-content>
-                </table>
-              <mat-card-actions>
-                <button mat-button>LIKE</button>
-                <button mat-button>SHARE</button>
-              </mat-card-actions>
-            </mat-card>
-          </mat-grid-tile>
-           <table mat-table [dataSource]="active_request">
-                layedColumns: string[] = ['Id','request_id' ,'location', 'Emp1', 'Emp2','Emp3','status','action'];                
-                <ng-container matColumnDef="requestId">
-                  <th mat-header-cell *matHeaderCellDef> request_id </th>
-                  <td mat-cell *matCellDef="let element"> {{element.requestId}} </td>
-                </ng-container>
-              
-              
-                <ng-container matColumnDef="name">
-                  <th mat-header-cell *matHeaderCellDef> name </th>
-                  <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-                </ng-container>
-              
-             
-                <ng-container matColumnDef="location">
-                  <th mat-header-cell *matHeaderCellDef> location </th>
-                  <td mat-cell *matCellDef="let element"> {{element.location}} </td>
-                </ng-container>
-
-                <ng-container matColumnDef="resTeamObj">
-                  <th mat-header-cell *matHeaderCellDef> resTeamObj </th>
-                  <td mat-cell *matCellDef="let element"> {{element.resTeamObj}} </td>
-                </ng-container>
-                <ng-container matColumnDef="nature">
-                  <th mat-header-cell *matHeaderCellDef> nature </th>
-                  <td mat-cell *matCellDef="let element"> {{element.nature}} </td>
-                </ng-container>
-                <ng-container matColumnDef="status">
-                  <th mat-header-cell *matHeaderCellDef> status </th>
-                  <td mat-cell *matCellDef="let element"> {{element.status}} </td>
-                </ng-container>
-
-               <ng-container matColumnDef="action">
-                    <th mat-header-cell *matHeaderCellDef> Action </th>
-                    <td mat-cell *matCellDef="let element"> <button class="btnCreateSubreddit">Message</button> </td>
-                </ng-container>
-
-                <ng-container matColumnDef="action2">
-                  <th mat-header-cell *matHeaderCellDef> Complelte </th>
-                  <td mat-cell *matCellDef="let element"> <button class="btnCreateSubreddit">Complete</button> </td>
-              </ng-container>
-        
-                <tr mat-header-row *matHeaderRowDef="displayedColumnsForRequest"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumnsForRequest;"></tr>
-              
-             
-              </table>
-    -->     
-       
-       
-      
       </div>
         <div class="col-md-3">
           <div class="sidebar">

@@ -8,8 +8,11 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class AllMessagesDialogComponent implements OnInit {
 
-  constructor(public dialog : MatDialog,@Inject(MAT_DIALOG_DATA) public data: any) { }
-
+  messages:any;
+  constructor(public dialog : MatDialog,@Inject(MAT_DIALOG_DATA) public data: any) { 
+    this.messages=this.data;
+  }
+  displayedColumn=['sender','content','timestamp'];
   ngOnInit(): void {
     console.log(this.data);
   }
@@ -18,4 +21,6 @@ export class AllMessagesDialogComponent implements OnInit {
       this.dialog.closeAll();
   }
 
+  
+  
 }

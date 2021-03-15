@@ -55,7 +55,7 @@ public class RequestController {
 	}
 	
 	@GetMapping("/getUserActiveRequest/")
-	public ResponseEntity<Object> getUserActiveRequest(@RequestParam String id) {
+	public ResponseEntity<List<Request>> getUserActiveRequest(@RequestParam String id) {
 		List<Request> returnRequest = reqVicService.getAcitveRequestForVictim(Long.parseLong(id));
 		logger.info("REQUEST_CONTROLLER"+returnRequest.toString());
 		return status(HttpStatus.OK).body(returnRequest);

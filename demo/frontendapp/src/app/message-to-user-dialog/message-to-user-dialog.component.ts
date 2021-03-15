@@ -73,16 +73,13 @@ export class MessageToUserDialogComponent implements OnInit {
     console.log("SENDING USER"+this.sendingUser);
     console.log("RECEIVING  USER"+this.receivingUser);
     let instantDate = Date();
-    let user = this.authService.getUserId(this.sendingUser);  
-    console.log("USER HERE"+user)
-    let channel = "/app/chat/"+user+"/sendToUser";
-    console.log("SENDINGTOUSER"+user);
-    console.log("CHANNEL"+channel)
-    let messageDTOtoSend = new ChatMessageDto(channel,instantDate,this.user,this.messageToUserForm.get('message')!.value,this.data);
+    this.authService.getUser(this.sendingUser).subscribe(
+      (response:any)=>{
+        let channel = "/app/chat/"+response.userId+"/sendToUser";   
+        let messageDTOtoSend = new ChatMessageDto(channel,instantDate,this.user,this.messageToUserForm.get('message')!.value,this.data);
+        this.ws.send(channel, {},JSON.stringify(messageDTOtoSend));
     
-  console.log(messageDTOtoSend);
-    this.ws.send("/app/chat/"+user+"/sendToUser", {},JSON.stringify(messageDTOtoSend));
-    console.log(this.messageToUserForm.get('message')!.value);
-  //  this.communicatioMessages.push(this.messageToUserForm.get('message')!.value);
+      }
+    );    
   }
 }

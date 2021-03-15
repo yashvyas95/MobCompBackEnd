@@ -8,6 +8,7 @@ import { LoginResponse } from '../login/login-response.payload';
 import { map, tap } from 'rxjs/operators';
 import { SignupRequestPayload } from '../signup/singup-request.payload';
 import { HttpParams } from '@angular/common/http';
+import { User } from '../model/User';
 
 @Injectable({
   providedIn: 'root'
@@ -79,17 +80,9 @@ export class AuthService {
     this.localStorage.clear('department');
   }
 
-  getUserId(username:string){
-
+  getUser(username:string){
     let params2 = new HttpParams().append('username',username);
-    let user:any;
-      this.httpClient.get('http://localhost:8080/api/auth/userByUsername',{params:params2}).subscribe(
-        (response)=>{user=response,console.log("IN AUTH SERVICE"+user)},
-        (error)=>{console.log("ERROR IN AUTH SERVICE GET USER ID")}
-      );
-    
-    return user;
-    
+    return this.httpClient.get('http://localhost:8080/api/auth/userByUsername',{params:params2});
   }
 
   getUserName() {
@@ -103,4 +96,8 @@ export class AuthService {
     return this.getJwtToken() != null;
   }
   
+  getAllUser(){
+    return this.httpClient.get('http://localhost:8080/api/auth/getAllEmp');
+  }
+
 }

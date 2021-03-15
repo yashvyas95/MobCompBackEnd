@@ -144,8 +144,11 @@ public class RequestVictimService {
     
     
     public List<Request> getAcitveRequestForVictim(Long id){
+    	logger.info("IN REQUEST SERVICE"+id);
     	var active_dir = requestRepo.findAll();
-    	active_dir.stream().filter(c->c.isStatus()&&c.getResTeamObj()==id).collect(Collectors.toList());
+    	active_dir=active_dir.stream()
+    			.filter(c->(c.isStatus()) )
+    			.collect(Collectors.toList());
     	logger.info("IN REQUEST SERVICE"+active_dir.toString());
     	//logger.info("IN REQUEST SERVICE"+list.toString());
     	return active_dir;

@@ -36,9 +36,16 @@ public class MessageController {
 		return status(HttpStatus.OK).body(messageRepo.findByReceiver(Long.parseLong(requestId)));
 	}
 	
+	@GetMapping("/getmessagesSentByRequest/")
+	public ResponseEntity<List<Message>> getSentMessageByRequest(@RequestParam String requestId) {
+		 //logger.info("----SENDMESSAGETOVICTIM------"+messageRepo.findByReceiver(Long.parseLong(requestId)));
+		return status(HttpStatus.OK).body(messageRepo.findBySender(Long.parseLong(requestId)));
+	}
+	
 	@GetMapping("/getmessagesByUserId/")
 	public ResponseEntity<List<Message>> getUserMessage(@RequestParam String userId) {
 		return status(HttpStatus.OK).body(messageRepo.findByReceiver(Long.parseLong(userId)));
 	}
+	
 	
 }

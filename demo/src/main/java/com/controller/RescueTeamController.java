@@ -54,8 +54,8 @@ public class RescueTeamController {
 	}
 	
 	@GetMapping("/getRequestByRescueTeamId/")
-	public ResponseEntity<List<Request>> getRequestAssigned(@RequestParam Long id){
-		return ResponseEntity.status(OK).body(resTeamService.getRequestAssigned(id));
+	public ResponseEntity<List<Request>> getRequestAssigned(@RequestParam String id){
+		return ResponseEntity.status(OK).body(resTeamService.getRequestAssigned(Long.parseLong(id)));
 	}	
 	
 	@GetMapping("/getAll/")

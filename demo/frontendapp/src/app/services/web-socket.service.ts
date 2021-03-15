@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import * as SockJS from 'sockjs-client';
 import * as Stomp from '@stomp/stompjs';
+import { ChatMessageDto } from '../model/ChatMessageDto';
+import { webSocket} from 'rxjs/webSocket';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,56 +14,37 @@ export class WebSocketService {
   stompClient: any;
   webSocket: any;
   chatMessages: any = [];
+  backendsocket_URL = "http://localhost:8080/socket";
+  socket:any;
+  constructor() {
+    this.socket = new SockJS(this.backendsocket_URL);
+    this.webSocket = Stomp.Stomp.over(this.socket);
+    this.connectToWebSocket();
+   }
 
-  constructor() { }
-
-
-  public connect(){
-    console.log("Initialize WebSocket Connection");
-       
-        this.stompClient = Stomp.Stomp.over(function(){
-                    return new WebSocket('ws://localhost:8080/socket/')
-                  });
-        const _this = this;
-        let ws = new SockJS(this.webSocket);
-        console.log(ws);
-        this.stompClient.connect({},  (frame: any) => {
-            this.stompClient.subscribe(_this.topic,  (sdkEvent: string) => {
-                this.onMessageReceived(sdkEvent);
-            });
-            //_this.stompClient.reconnect_delay = 2000;
-        });
+  connectToWebSocket(){
+  //  let socket = new SockJS(this.backendsocket_URL);
+    this.webSocket = Stomp.Stomp.over(this.socket);
+    this.webSocket=this.webSocket.connect({},(frame:any)=>{});
   }
 
-/*
-  public openWebSocket(){
-    this.webSocket = new WebSocket('ws://localhost:8080/ws');
-
-    this.webSocket.onopen = (event: any) => {
-      console.log('Open: ', event);
-    };
-
-    this.webSocket.onmessage = (event: any) => {
-      const chatMessageDto = JSON.parse(event.data);
-      this.chatMessages.push(chatMessageDto);
-    };
-
-    this.webSocket.onclose = (event : any) => {
-      console.log('Close: ', event);
-    };
+  subscribeToTopicChat():any{
+      let socket = new SockJS(this.backendsocket_URL);
+      this.webSocket = Stomp.Stomp.over(this.socket);
+      this.webSocket.connect({},(frame:any)=>{
+        this.webSocket.subscribe("/topic/chat", (message: { body: string; }) => {
+          return message.body;
+        }); 
+      });
+      
   }
-*/
-  sendMessage(message:any) {
-    console.log("calling logout api via web socket");
-    this.stompClient.send("/app/hello", {}, JSON.stringify(message));
+
+  sendMessage(channel:string,message:ChatMessageDto):void{
+    this.webSocket.send(channel,{},JSON.stringify(message));
 }
 
-  public closeWebSocket() {
+  public closeWebSocket():void{
     this.webSocket.close();
   }
 
-  onMessageReceived(message: string) {
-    console.log("Message Recieved from Server :: " + message);
-   // this.handleMessage(JSON.stringify(message.body));
-}
 }

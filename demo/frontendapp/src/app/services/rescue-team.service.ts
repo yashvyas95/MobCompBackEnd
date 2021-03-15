@@ -11,14 +11,9 @@ export class RescueTeamService {
 
   constructor(private httpClient: HttpClient) { }
   x:any;
-  getRescueTeam(id: string){
+  getRescueTeam(id: string):Observable<any>{
     const params = new HttpParams().append('id',id);
-    return this.httpClient.get('http://localhost:8080/api/rescueTeam/getById/',{params:params}).pipe(
-        map((data: any) => {
-          console.log(data);
-          return data;
-        }),
-     );
+    return this.httpClient.get('http://localhost:8080/api/rescueTeam/getById/',{params:params});
   }
 /*
   getmembers(id:number):Observable<any>{
@@ -40,4 +35,9 @@ export class RescueTeamService {
     return this.httpClient.get('http://localhost:8080/api/rescueTeam/assignRequestToResTeam/',{params:params}).subscribe();
   }
  
+  getRequestFromRequestId(id:string):Observable<any>{
+    let params = new HttpParams().append('id', id);
+    return this.httpClient.get('http://localhost:8080/api/rescueTeam/getRequestByRescueTeamId/', { params: params });
+  }
+
 }

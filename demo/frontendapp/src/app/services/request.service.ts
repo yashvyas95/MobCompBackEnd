@@ -21,7 +21,12 @@ export class RequestService {
   }
 
   getAllActiveRequest():Observable<any>{
-    return this.httpClient.get('http://localhost:8080/api/request/getAllActiveRequest/',{});
+    return this.httpClient.get('http://localhost:8080/api/request/getAllActiveRequest/');
+  }
+
+  getUserActiveRequest(id:string){
+    const params = new HttpParams().append('id',id);
+    return this.httpClient.get('http://localhost:8080/api/request/getUserActiveRequest/', { params: params });
   }
   
 }

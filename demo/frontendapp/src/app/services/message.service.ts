@@ -12,7 +12,7 @@ export class MessageService {
   
   getMessageByRequestId(requestId:number):Observable<any>{
     const params = new HttpParams().append('requestId',requestId.toString());
-    return this.httpClient.get('http://localhost:8080/api/message/getmessages/',{params:params});
+    return this.httpClient.get('http://localhost:8080/api/message/getmessagesByRequestId/',{params:params});
   }
 
   getMessageByUserId(userId:number):Observable<any>{
@@ -27,6 +27,12 @@ export class MessageService {
     let channel = "/app/chat/" + messageToSend.receiver + "/sendToRescueTeam"
     this.websocketService.sendMessage(channel,messageToSend);
    }
+
+   sendMessageToVictim(messageToSend:ChatMessageDto){
+     let channel = "/app/chat/" + messageToSend.receiver + "/sendToVictim"
+     this.websocketService.sendMessage(channel,messageToSend);
+   }
+
 
    sendMessageById(channel:string,messageToSend:ChatMessageDto){
     this.websocketService.sendMessage(channel,messageToSend);

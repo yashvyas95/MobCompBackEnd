@@ -39,14 +39,14 @@ public class ChatController {
     //messagingTemplate.convertAndSend(format("/topic/chat/channel/%s", roomId), chatMessage);
   }
   
-  @MessageMapping("/chat/{requestId}/send")
+  @MessageMapping("/chat/{requestId}/sendToVictim")
   @SendTo("/topic/chat")
   public void sendMessageToVictim(@DestinationVariable String requestId, @Payload Message chatMessage) {
 	 logger.info("----SENDMESSAGETOVICTIM------"+chatMessage.toString());
 	 //logger.info("----SENDMESSAGETOUSER------"+requestId.toString());
-    //messagingTemplate.convertAndSend("/topic/chat", chatMessage);
+	 messagingTemplate.convertAndSend("/topic/chat", chatMessage);
 	 messageRepo.save(chatMessage);
-    messagingTemplate.convertAndSend("/topic/chat", chatMessage);
+	 messagingTemplate.convertAndSend("/topic/chat/{requestId}", chatMessage);
   }
   
   @MessageMapping("/chat/{rescueTeamId}/sendToRescueTeam")

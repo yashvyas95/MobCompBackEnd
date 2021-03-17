@@ -36,19 +36,21 @@ export class ChatLobbyComponent implements OnInit {
   chatform: any;
   message: any=[];
   messageInput: any;
-
+  sentMessages: any[]=[];
 
   constructor(private authService:AuthService,private webSocketService:WebSocketService,private dialog: MatDialog, private localStorage: LocalStorageService, private vicServices: VictimServicesService, private reqServices: RescueTeamService,private messageService: MessageService ,@Inject(MAT_DIALOG_DATA) public data: any) {
     this.request = this.localStorage.retrieve('request');
     this.user = this.localStorage.retrieve('username');
 
-
     if (this.user != null) {
         this.authService.getUser(this.user).subscribe(
           (response:any)=>{
+            this.rescueTeam=response.rescueTeamId;
             this.reqServices.getRescueTeam(response.rescueTeamId).subscribe(
               (response:any)=>{
-                  this.channelList=response.requestId;
+                  this.channelList=[response.requestId];
+                  this.rescueTeam=response;
+                  
               }
             )
           }
@@ -56,13 +58,16 @@ export class ChatLobbyComponent implements OnInit {
         
     }
     else {
-      this.vicServices.getRequest(this.request.requestId).subscribe(data => {
-        console.log(data),
+      this.vicServices.getRequest(this.request.requestId).subscribe(data => {  
+        this.webSocketService.subscribeToVictimchannel(this.request.requestId);
+        var received_message_from_topic_chat=this.webSocketService.subscribeToTopicChat();
+    
+        console.log(received_message_from_topic_chat);
           this.rescueTeam = this.reqServices.getRescueTeam(data.resTeamObj).subscribe(
             (response) => {
-              console.log(response),
                 this.rescueTeam = response,
                 this.channelList = this.rescueTeam.members;
+
             },
             (error) => console.log(error)
           );
@@ -77,25 +82,38 @@ export class ChatLobbyComponent implements OnInit {
 
   }
 
-
+ 
   ngOnInit(): void {
     //this.request = this.localStorage.retrieve('request');this.request = this.localStorage.retrieve('request');
     this.messages = this.data;
-    console.log(this.messages);
     this.connect();
   }
-
+  
   connect() {
+
     var received_message_from_topic_chat=this.webSocketService.subscribeToTopicChat();
-    
+
+    console.log(received_message_from_topic_chat);
+   // this.sendMessage.push(received_message_from_topic_chat);
   }
 
   disconnect() {
     this.webSocketService.closeWebSocket();
   }
 
-  sentMessages: any[] = [];
-  sendMessage() {
+  
+  sendMessage(){
+    if(this.user!=null){this.sendMessageToVictim();}
+    else{this.sendMessageToVictim();}
+  }
+  sendMessageToVictim(){
+    let messageContent = this.chatform.get('messageInput')!.value;
+    let channel = "/app/chat/" + this.rescueTeam.requestId + "/sendToVictim"
+    let messageToSend = new ChatMessageDto(channel, Date(), this.request.requestId.toString(), messageContent, this.rescueTeam.rescueTeamId);
+    this.sentMessages.push(messageToSend);
+    this.messageService.sendMessageById(channel,messageToSend);
+  }
+  sendMessageToRescueTeam() {
     let messageContent = this.chatform.get('messageInput')!.value;
     let channel = "/app/chat/" + this.rescueTeam.rescueTeamId + "/sendToRescueTeam"
     let messageToSend = new ChatMessageDto(channel, Date(), this.request.requestId.toString(), messageContent, this.rescueTeam.rescueTeamId);

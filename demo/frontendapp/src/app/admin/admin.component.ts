@@ -37,6 +37,7 @@ export class AdminComponent implements OnInit {
   employeeInfoDialogOpen = false;
   username: any;
   messages: any[] = [];
+  displayedColumns=['sender','content','timestamp'];
   constructor(private authService: AuthService, private messageService: MessageService, private router: Router, private localStorage: LocalStorageService, private http: HttpClient, public dialog: MatDialog) {
 
 

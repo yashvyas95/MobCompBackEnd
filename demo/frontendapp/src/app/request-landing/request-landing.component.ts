@@ -33,18 +33,23 @@ export class RequestLandingComponent implements OnInit {
   allCOllection!:any[]
 
   ngOnInit(): void {
-      console.log(this.localStorage.retrieve('request'));
-      console.log(this.localStorage.retrieve('request').resTeamObj);
       this.requestObject=this.requestService.getRequest(this.localStorage.retrieve('request').requestId)
       this.rescueTeamService.getRescueTeam(this.localStorage.retrieve('request').resTeamObj).subscribe(
         (response)=>{this.rescueTeamObject=[response];}
       );
-      this.allMessages=this.messageService.getMessageByRequestId(this.localStorage.retrieve('request').requestId);
+      this.messageService.getMessageByRequestId(this.localStorage.retrieve('request').requestId).subscribe(
+        (response)=>{
+          console.log(response);
+          this.allMessages=response;
+
+        }
+      );     
       this.connect();
   }
 
   connect(){
       this.websocketService.connectToWebSocket();
+      console.log(this.websocketService.subscribeToTopicChat());
   }
 
   openChatLobby(){
